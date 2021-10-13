@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/Departements_L93_1.js"></script>
+        <script src="data/MassifJura_L93_2.js"></script>
+        <script src="data/CoursdEau_NA_L93_3.js"></script>
+        <script src="data/RangChroniques_VCN10_StationsMJ_L93_4.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:1, minZoom:8
+        }).fitBounds([[45.55324567253855,3.7669852243149133],[47.769084203514986,8.579203883798588]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 8,
+            maxZoom: 1,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        function pop_Departements_L93_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID_GEOFLA'] !== null ? autolinker.link(feature.properties['ID_GEOFLA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODE_DEPT'] !== null ? autolinker.link(feature.properties['CODE_DEPT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NOM_DEPT'] !== null ? autolinker.link(feature.properties['NOM_DEPT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODE_CHF'] !== null ? autolinker.link(feature.properties['CODE_CHF'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Departements_L93_1_0() {
+            return {
+                pane: 'pane_Departements_L93_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,113,141,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Departements_L93_1');
+        map.getPane('pane_Departements_L93_1').style.zIndex = 401;
+        map.getPane('pane_Departements_L93_1').style['mix-blend-mode'] = 'normal';
+        var layer_Departements_L93_1 = new L.geoJson(json_Departements_L93_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Departements_L93_1',
+            layerName: 'layer_Departements_L93_1',
+            pane: 'pane_Departements_L93_1',
+            onEachFeature: pop_Departements_L93_1,
+            style: style_Departements_L93_1_0,
+        });
+        bounds_group.addLayer(layer_Departements_L93_1);
+        map.addLayer(layer_Departements_L93_1);
+        function pop_MassifJura_L93_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LibelleZK'] !== null ? autolinker.link(feature.properties['LibelleZK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Echelle'] !== null ? autolinker.link(feature.properties['Echelle'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Source'] !== null ? autolinker.link(feature.properties['Source'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Lien'] !== null ? autolinker.link(feature.properties['Lien'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Massif'] !== null ? autolinker.link(feature.properties['Massif'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MassifJura_L93_2_0() {
+            return {
+                pane: 'pane_MassifJura_L93_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(171,101,18,0.5019607843137255)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_MassifJura_L93_2');
+        map.getPane('pane_MassifJura_L93_2').style.zIndex = 402;
+        map.getPane('pane_MassifJura_L93_2').style['mix-blend-mode'] = 'normal';
+        var layer_MassifJura_L93_2 = new L.geoJson(json_MassifJura_L93_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_MassifJura_L93_2',
+            layerName: 'layer_MassifJura_L93_2',
+            pane: 'pane_MassifJura_L93_2',
+            onEachFeature: pop_MassifJura_L93_2,
+            style: style_MassifJura_L93_2_0,
+        });
+        bounds_group.addLayer(layer_MassifJura_L93_2);
+        map.addLayer(layer_MassifJura_L93_2);
+        function pop_CoursdEau_NA_L93_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODE_HYDRO'] !== null ? autolinker.link(feature.properties['CODE_HYDRO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CLASSE'] !== null ? autolinker.link(feature.properties['CLASSE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TOPONYME'] !== null ? autolinker.link(feature.properties['TOPONYME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CANDIDAT'] !== null ? autolinker.link(feature.properties['CANDIDAT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Echelle'] !== null ? autolinker.link(feature.properties['Echelle'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Source'] !== null ? autolinker.link(feature.properties['Source'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Lien'] !== null ? autolinker.link(feature.properties['Lien'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CoursdEau_NA_L93_3_0(feature) {
+            if (feature.properties['CLASSE'] >= 1.000000 && feature.properties['CLASSE'] <= 2.000000 ) {
+                return {
+                pane: 'pane_CoursdEau_NA_L93_3',
+                opacity: 1,
+                color: 'rgba(61,149,193,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+            }
+            if (feature.properties['CLASSE'] >= 2.000000 && feature.properties['CLASSE'] <= 3.000000 ) {
+                return {
+                pane: 'pane_CoursdEau_NA_L93_3',
+                opacity: 1,
+                color: 'rgba(31,120,180,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+            }
+            if (feature.properties['CLASSE'] >= 3.000000 && feature.properties['CLASSE'] <= 7.000000 ) {
+                return {
+                pane: 'pane_CoursdEau_NA_L93_3',
+                opacity: 1,
+                color: 'rgba(31,120,180,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+            }
+        }
+        map.createPane('pane_CoursdEau_NA_L93_3');
+        map.getPane('pane_CoursdEau_NA_L93_3').style.zIndex = 403;
+        map.getPane('pane_CoursdEau_NA_L93_3').style['mix-blend-mode'] = 'normal';
+        var layer_CoursdEau_NA_L93_3 = new L.geoJson(json_CoursdEau_NA_L93_3, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_CoursdEau_NA_L93_3',
+            layerName: 'layer_CoursdEau_NA_L93_3',
+            pane: 'pane_CoursdEau_NA_L93_3',
+            onEachFeature: pop_CoursdEau_NA_L93_3,
+            style: style_CoursdEau_NA_L93_3_0,
+        });
+        bounds_group.addLayer(layer_CoursdEau_NA_L93_3);
+        map.addLayer(layer_CoursdEau_NA_L93_3);
+        function pop_RangChroniques_VCN10_StationsMJ_L93_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Code Station</strong><br />' + (feature.properties['Code Station'] !== null ? autolinker.link(feature.properties['Code Station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Nom Station</strong><br />' + (feature.properties['Nom Station'] !== null ? autolinker.link(feature.properties['Nom Station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Rang 1</strong><br />' + (feature.properties['Rang 1'] !== null ? autolinker.link(feature.properties['Rang 1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Rang 2</strong><br />' + (feature.properties['Rang 2'] !== null ? autolinker.link(feature.properties['Rang 2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Rang 3</strong><br />' + (feature.properties['Rang 3'] !== null ? autolinker.link(feature.properties['Rang 3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Chronique</strong><br />' + (feature.properties['Chronique'] !== null ? autolinker.link(feature.properties['Chronique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_RangChroniques_VCN10_StationsMJ_L93_4_0() {
+            return {
+                pane: 'pane_RangChroniques_VCN10_StationsMJ_L93_4',
+                radius: 10.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_RangChroniques_VCN10_StationsMJ_L93_4');
+        map.getPane('pane_RangChroniques_VCN10_StationsMJ_L93_4').style.zIndex = 404;
+        map.getPane('pane_RangChroniques_VCN10_StationsMJ_L93_4').style['mix-blend-mode'] = 'normal';
+        var layer_RangChroniques_VCN10_StationsMJ_L93_4 = new L.geoJson(json_RangChroniques_VCN10_StationsMJ_L93_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_RangChroniques_VCN10_StationsMJ_L93_4',
+            layerName: 'layer_RangChroniques_VCN10_StationsMJ_L93_4',
+            pane: 'pane_RangChroniques_VCN10_StationsMJ_L93_4',
+            onEachFeature: pop_RangChroniques_VCN10_StationsMJ_L93_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_RangChroniques_VCN10_StationsMJ_L93_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_RangChroniques_VCN10_StationsMJ_L93_4);
+        map.addLayer(layer_RangChroniques_VCN10_StationsMJ_L93_4);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/RangChroniques_VCN10_StationsMJ_L93_4.png" /> RangChroniques_VCN10_StationsMJ_L93': layer_RangChroniques_VCN10_StationsMJ_L93_4,'CoursdEau_NA_L93<br /><table><tr><td style="text-align: center;"><img src="legend/CoursdEau_NA_L93_3_10200.png" /></td><td> 1.0 - 2.0 </td></tr><tr><td style="text-align: center;"><img src="legend/CoursdEau_NA_L93_3_20301.png" /></td><td> 2.0 - 3.0 </td></tr><tr><td style="text-align: center;"><img src="legend/CoursdEau_NA_L93_3_30702.png" /></td><td> 3.0 - 7.0 </td></tr></table>': layer_CoursdEau_NA_L93_3,'<img src="legend/MassifJura_L93_2.png" /> MassifJura_L93': layer_MassifJura_L93_2,'<img src="legend/Departements_L93_1.png" /> Departements_L93': layer_Departements_L93_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"Rang 1": "int","Nom Station": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Rang1 = document.createElement("div");
+            div_Rang1.id = "div_Rang1";
+            div_Rang1.className = "slider";
+            document.getElementById("menu").appendChild(div_Rang1);
+            var lab_Rang1 = document.createElement('div');
+            lab_Rang1.innerHTML  = 'Rang 1: <span id="val_Rang1"></span>';
+            lab_Rang1.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_Rang1);
+            var reset_Rang1 = document.createElement('div');
+            reset_Rang1.innerHTML = 'clear filter';
+            reset_Rang1.className = 'filterlabel';
+            lab_Rang1.className = 'filterlabel';
+            reset_Rang1.onclick = function() {
+                sel_Rang1.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_Rang1);
+            var sel_Rang1 = document.getElementById('div_Rang1');
+            noUiSlider.create(sel_Rang1, {
+                connect: true,
+                start: [0, 2020],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 0,
+                max: 2020
+                }
+            });
+            sel_Rang1.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_Rang1 = document.getElementById('val_Rang1');
+            val_Rang1.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_NomStation = document.createElement('div');
+            div_NomStation.id = "div_NomStation";
+            div_NomStation.className= "filterselect";
+            document.getElementById("menu").appendChild(div_NomStation);
+            sel_NomStation = document.createElement('select');
+            sel_NomStation.multiple = true;
+            sel_NomStation.size = 10;
+            sel_NomStation.id = "sel_NomStation";
+            var NomStation_options_str = "<option value='' unselected></option>";
+            sel_NomStation.onchange = function(){filterFunc()};
+            NomStation_options_str  += '<option value="L&apos;Ain à Bourg-de-Sirod">L&apos;Ain à Bourg-de-Sirod</option>';
+            NomStation_options_str  += '<option value="L&apos;Ain à Pont-d&apos;Ain">L&apos;Ain à Pont-d&apos;Ain</option>';
+            NomStation_options_str  += '<option value="L&apos;Albarine à Saint-Rambert-en-Bugey">L&apos;Albarine à Saint-Rambert-en-Bugey</option>';
+            NomStation_options_str  += '<option value="L&apos;Allan à Courcelles-lès-Montbéliard">L&apos;Allan à Courcelles-lès-Montbéliard</option>';
+            NomStation_options_str  += '<option value="L&apos;Allan à Fesches-le-Châtel">L&apos;Allan à Fesches-le-Châtel</option>';
+            NomStation_options_str  += '<option value="L&apos;Angillon à Champagnole">L&apos;Angillon à Champagnole</option>';
+            NomStation_options_str  += '<option value="L&apos;Audeux à Pont-les-Moulins [Chatel]">L&apos;Audeux à Pont-les-Moulins [Chatel]</option>';
+            NomStation_options_str  += '<option value="L&apos;Oignin à Maillat [Pontet]">L&apos;Oignin à Maillat [Pontet]</option>';
+            NomStation_options_str  += '<option value="L&apos;Orbe aux Rousses">L&apos;Orbe aux Rousses</option>';
+            NomStation_options_str  += '<option value="La Bienne à Jeurre">La Bienne à Jeurre</option>';
+            NomStation_options_str  += '<option value="La Bienne à Morez">La Bienne à Morez</option>';
+            NomStation_options_str  += '<option value="La Bourbeuse à Froidefontaine">La Bourbeuse à Froidefontaine</option>';
+            NomStation_options_str  += '<option value="La Cuisance à Mesnay">La Cuisance à Mesnay</option>';
+            NomStation_options_str  += '<option value="La Furieuse à Salins-les-Bains">La Furieuse à Salins-les-Bains</option>';
+            NomStation_options_str  += '<option value="La Lemme à Fort-du-Plasne [Pont-de-Lemme]">La Lemme à Fort-du-Plasne [Pont-de-Lemme]</option>';
+            NomStation_options_str  += '<option value="La Loue [source] à Ouhans [canal]">La Loue [source] à Ouhans [canal]</option>';
+            NomStation_options_str  += '<option value="La Loue à Champagne-sur-Loue">La Loue à Champagne-sur-Loue</option>';
+            NomStation_options_str  += '<option value="La Loue à Chenecey-Buillon">La Loue à Chenecey-Buillon</option>';
+            NomStation_options_str  += '<option value="La Loue à Vuillafans">La Loue à Vuillafans</option>';
+            NomStation_options_str  += '<option value="La Saine à Foncine-le-Bas">La Saine à Foncine-le-Bas</option>';
+            NomStation_options_str  += '<option value="La Saine à Syam">La Saine à Syam</option>';
+            NomStation_options_str  += '<option value="La Savoureuse à Belfort">La Savoureuse à Belfort</option>';
+            NomStation_options_str  += '<option value="La Savoureuse à Vieux-Charmont">La Savoureuse à Vieux-Charmont</option>';
+            NomStation_options_str  += '<option value="La Semine à Châtillon-en-Michaille [Coz]">La Semine à Châtillon-en-Michaille [Coz]</option>';
+            NomStation_options_str  += '<option value="La Vallière à Lons-le-Saunier">La Vallière à Lons-le-Saunier</option>';
+            NomStation_options_str  += '<option value="La Valserine à Chézery-Forens [Chézery]">La Valserine à Chézery-Forens [Chézery]</option>';
+            NomStation_options_str  += '<option value="La Valserine à Lélex [Niaizet]">La Valserine à Lélex [Niaizet]</option>';
+            NomStation_options_str  += '<option value="Le Bief Rouge à Longevilles-Mont-d&apos;Or">Le Bief Rouge à Longevilles-Mont-d&apos;Or</option>';
+            NomStation_options_str  += '<option value="Le Cusancin à Cusance">Le Cusancin à Cusance</option>';
+            NomStation_options_str  += '<option value="Le Dessoubre à Saint-Hippolyte">Le Dessoubre à Saint-Hippolyte</option>';
+            NomStation_options_str  += '<option value="Le Doubs à Besançon">Le Doubs à Besançon</option>';
+            NomStation_options_str  += '<option value="Le Doubs à Doubs">Le Doubs à Doubs</option>';
+            NomStation_options_str  += '<option value="Le Doubs à Goumois">Le Doubs à Goumois</option>';
+            NomStation_options_str  += '<option value="Le Doubs à Labergement-Sainte-Marie">Le Doubs à Labergement-Sainte-Marie</option>';
+            NomStation_options_str  += '<option value="Le Doubs à Mathay">Le Doubs à Mathay</option>';
+            NomStation_options_str  += '<option value="Le Doubs à Mouthe">Le Doubs à Mouthe</option>';
+            NomStation_options_str  += '<option value="Le Doubs à la Cluse-et-Mijoux [Pontarlier amont]">Le Doubs à la Cluse-et-Mijoux [Pontarlier amont]</option>';
+            NomStation_options_str  += '<option value="Le Drugeon à Bonnevaux">Le Drugeon à Bonnevaux</option>';
+            NomStation_options_str  += '<option value="Le Furans à Arbignieu [Pont de Peyzieu]">Le Furans à Arbignieu [Pont de Peyzieu]</option>';
+            NomStation_options_str  += '<option value="Le Furans à Pugieu [Pont du Martinet, 2]">Le Furans à Pugieu [Pont du Martinet, 2]</option>';
+            NomStation_options_str  += '<option value="Le Gland à Meslières">Le Gland à Meslières</option>';
+            NomStation_options_str  += '<option value="Le Groin à Artemare [Cerveyrieu]">Le Groin à Artemare [Cerveyrieu]</option>';
+            NomStation_options_str  += '<option value="Le Hérisson à Doucier">Le Hérisson à Doucier</option>';
+            NomStation_options_str  += '<option value="Le Lison [source] à Nans-sous-Sainte-Anne">Le Lison [source] à Nans-sous-Sainte-Anne</option>';
+            NomStation_options_str  += '<option value="Le Lison à Myon">Le Lison à Myon</option>';
+            NomStation_options_str  += '<option value="Le Solnan à Verjon [Village]">Le Solnan à Verjon [Village]</option>';
+            NomStation_options_str  += '<option value="Le Suran à Germagnat [Lasserra]">Le Suran à Germagnat [Lasserra]</option>';
+            NomStation_options_str  += '<option value="Le Suran à Pont-d&apos;Ain">Le Suran à Pont-d&apos;Ain</option>';
+            NomStation_options_str  += '<option value="Le Tacon à Saint-Claude">Le Tacon à Saint-Claude</option>';
+            NomStation_options_str  += '<option value="Le Verneau à Nans-sous-Sainte-Anne">Le Verneau à Nans-sous-Sainte-Anne</option>';
+            sel_NomStation.innerHTML = NomStation_options_str;
+            div_NomStation.appendChild(sel_NomStation);
+            var lab_NomStation = document.createElement('div');
+            lab_NomStation.innerHTML = 'Nom Station';
+            lab_NomStation.className = 'filterlabel';
+            div_NomStation.appendChild(lab_NomStation);
+            var reset_NomStation = document.createElement('div');
+            reset_NomStation.innerHTML = 'clear filter';
+            reset_NomStation.className = 'filterlabel';
+            reset_NomStation.onclick = function() {
+                var options = document.getElementById("sel_NomStation").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_NomStation.appendChild(reset_NomStation);
+        resetLabels([layer_RangChroniques_VCN10_StationsMJ_L93_4]);
+        map.on("zoomend", function(){
+            resetLabels([layer_RangChroniques_VCN10_StationsMJ_L93_4]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_RangChroniques_VCN10_StationsMJ_L93_4]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_RangChroniques_VCN10_StationsMJ_L93_4]);
+        });
+        </script>
+    </body>
+</html>
